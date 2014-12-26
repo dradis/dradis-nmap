@@ -4,4 +4,5 @@ require 'dradis-plugins'
 # Load this add-on's engine
 require 'dradis/plugins/nmap'
 
-# Load supporting Nmap classes
+# Require ruby-nmap gem classes
+require 'nmap/xml'
