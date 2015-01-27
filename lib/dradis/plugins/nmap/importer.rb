@@ -33,8 +33,8 @@ module Dradis::Plugins::Nmap
 
         # Set basic host properties
         host_node.set_property(:ip, host.ip)
-        host_node.set_property(:hostname, host.hostnames.map(&:name))
-        host_node.set_property(:os, host.os.matches.map(&:name))
+        host_node.set_property(:hostname, host.hostnames.map(&:name)) if host.hostnames.present?
+        host_node.set_property(:os, host.os.matches.map(&:name)) if host.os.present?
 
         host.each_port do |port|
           logger.info{ "\tNew port: #{ port.number }/#{ port.protocol }" }
