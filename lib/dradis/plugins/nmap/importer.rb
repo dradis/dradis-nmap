@@ -40,7 +40,7 @@ module Dradis::Plugins::Nmap
           logger.info{ "\tNew port: #{ port.number }/#{ port.protocol }" }
 
           # Add service to host properties
-          host_node.set_property(:service, {
+          host_node.set_property(:services, {
               port: port.number,
               protocol: port.protocol,
               state: port.state,
