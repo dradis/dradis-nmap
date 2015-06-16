@@ -31,14 +31,28 @@ module Dradis::Plugins::Nmap
         host_node = content_service.create_node(label: host_label, type: :host)
         logger.info{ "New host: #{ host_label }" }
 
-        host_text = template_service.process_template(template: 'host', data: host)
+        # Set basic host properties
+        host_node.set_property(:ip, host.ip)
+        host_node.set_property(:hostname, host.hostnames.map(&:name)) if host.hostnames.present?
+        host_node.set_property(:os, host.os.matches.map(&:name)) if host.os.present?
 
-        content_service.create_note(
-          text: host_text,
-          node: host_node)
+        # Old-style properties-in-a-note approach
+        host_text = template_service.process_template(template: 'host', data: host)
+        content_service.create_note(text: host_text, node: host_node)
 
         host.each_port do |port|
           logger.info{ "\tNew port: #{ port.number }/#{ port.protocol }" }
+
+          # Add service to host properties
+          host_node.set_property(:services, {
+              port: port.number,
+              protocol: port.protocol,
+              state: port.state,
+              reason: port.reason,
+              name: port.try('service').try('name'),
+              product: port.try('service').try('product'),
+              version: port.try('service').try('version')
+          })
 
           # HACK: patch in a `host` method to `Nmap::Port`
           # so we can use it in the template:
@@ -51,6 +65,8 @@ module Dradis::Plugins::Nmap
             text: port_text,
             node: host_node)
         end
+
+        host_node.save
       end
     end
   end
