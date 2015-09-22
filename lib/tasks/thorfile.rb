@@ -3,7 +3,7 @@ class NmapTasks < Thor
 
   namespace "dradis:plugins:nmap"
 
-  desc      "nmap FILE", "upload the results of an Nmap scan"
+  desc      "upload FILE", "upload the results of an Nmap scan"
   long_desc "Upload an Nmap scan to create nodes and notes for the hosts and "\
             "ports discovered during scanning."
   def upload(file_path)
