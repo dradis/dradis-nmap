@@ -1,5 +1,5 @@
 class NmapTasks < Thor
-  include Core::Pro::ProjectScopedTask
+  include Core::Pro::ProjectScopedTask if defined?(::Core::Pro)
 
   namespace "dradis:plugins:nmap"
 
@@ -15,7 +15,7 @@ class NmapTasks < Thor
     end
 
     # Set project scope from the PROJECT_ID env variable:
-    detect_and_set_project_scope
+    detect_and_set_project_scope if defined?(::Core::Pro)
 
     plugin = Dradis::Plugins::Nmap
 
