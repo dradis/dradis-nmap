@@ -51,6 +51,7 @@ module Dradis::Plugins::Nmap
               reason: port.reason,
               name: port.try('service').try('name'),
               product: port.try('service').try('product'),
+              scripts: port.try('scripts'),
               version: port.try('service').try('version')
           })
 
