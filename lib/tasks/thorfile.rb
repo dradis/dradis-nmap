@@ -22,7 +22,7 @@ class NmapTasks < Thor
     Dradis::Plugins::Nmap::Importer.new(
       logger:           logger,
       content_service:  service_namespace::ContentService.new(plugin: plugin),
-      template_service: service_namespace::TemplateService.new(plugin: plugin)
+      template_service: Dradis::Plugins::TemplateService.new(plugin: plugin)
     ).import(file: file_path)
 
     logger.close
