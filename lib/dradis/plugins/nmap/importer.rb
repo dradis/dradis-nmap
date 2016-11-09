@@ -46,8 +46,8 @@ module Dradis::Plugins::Nmap
           # Add service to host properties
           host_node.set_property(:services, {
               port: port.number,
-              protocol: port.protocol,
-              state: port.state,
+              protocol: port.protocol.to_s,
+              state: port.state.to_s,
               reason: port.reason,
               name: port.try('service').try('name'),
               product: port.try('service').try('product'),
