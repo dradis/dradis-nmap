@@ -6,9 +6,9 @@ class NmapTasks < Thor
   desc      "upload FILE", "upload the results of an Nmap scan"
   long_desc "Upload an Nmap scan to create nodes and notes for the hosts and "\
             "ports discovered during scanning."
+
   def upload(file_path)
     require 'config/environment'
-
 
     logger = Logger.new(STDOUT)
     logger.level = Logger::DEBUG
