@@ -17,7 +17,7 @@ class NmapTasks < Thor
 
     detect_and_set_project_scope
 
-    importer = Dradis::Plugins::Nmap::Importer.new(logger: logger)
+    importer = Dradis::Plugins::Nmap::Importer.new(task_options)
     importer.import(file: file_path)
   end
 end
