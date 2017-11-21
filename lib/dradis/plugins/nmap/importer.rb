@@ -46,7 +46,7 @@ module Dradis::Plugins::Nmap
           # Add service to host properties
           extra = []
           if port.try(:scripts)
-            port.try(:scripts).map do |k, v|
+            port.scripts.map do |k, v|
               extra << { source: 'Nmap NSE scripts', id: k, output: v }
             end
           end
