@@ -43,15 +43,7 @@ module Dradis::Plugins::Nmap
         host.each_port do |port|
           logger.info { "\tNew port: #{port.number}/#{port.protocol}" }
 
-          # Add service to host properties
-          extra = []
-          if port.try(:scripts)
-            port.scripts.map do |k, v|
-              extra << { source: 'Nmap NSE scripts', id: k, output: v }
-            end
-          end
-          host_node.set_property(
-            :services,
+          service = {
             port: port.number,
             protocol: port.protocol.to_s,
             state: port.state.to_s,
@@ -59,12 +51,14 @@ module Dradis::Plugins::Nmap
             name: port.try(:service).try(:name),
             product: port.try(:service).try(:product),
             version: port.try(:service).try(:version),
-            extra: extra
-          )
+            source: 'Nmap NSE scripts',
+          }
 
-          # host_node.add_service_extra(
-          #   source: 'Nmap NSE scripts',
-          #   id:
+          # Node#set_service will store these under
+          # Node#properties[:service_extras]:
+          port.scripts.each { |k, v| service[k] = v } if port.try(:scripts)
+
+          host_node.set_service(service)
 
           # HACK: patch in a `host` method to `Nmap::Port`
           # so we can use it in the template:
