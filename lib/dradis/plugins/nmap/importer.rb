@@ -51,7 +51,7 @@ module Dradis::Plugins::Nmap
             name: port.try(:service).try(:name),
             product: port.try(:service).try(:product),
             version: port.try(:service).try(:version),
-            source: 'Nmap NSE scripts',
+            source: :nmap,
           }
 
           # Node#set_service will store these under
