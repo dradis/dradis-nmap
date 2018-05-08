@@ -41,19 +41,24 @@ module Dradis::Plugins::Nmap
         content_service.create_note(text: host_text, node: host_node)
 
         host.each_port do |port|
-          logger.info{ "\tNew port: #{ port.number }/#{ port.protocol }" }
+          logger.info { "\tNew port: #{port.number}/#{port.protocol}" }
 
-          # Add service to host properties
-          host_node.set_property(:services, {
-              port: port.number,
-              protocol: port.protocol.to_s,
-              state: port.state.to_s,
-              reason: port.reason,
-              name: port.try('service').try('name'),
-              product: port.try('service').try('product'),
-              scripts: port.try('scripts'),
-              version: port.try('service').try('version')
-          })
+          service = {
+            port: port.number,
+            protocol: port.protocol.to_s,
+            state: port.state.to_s,
+            reason: port.reason,
+            name: port.try(:service).try(:name),
+            product: port.try(:service).try(:product),
+            version: port.try(:service).try(:version),
+            source: :nmap,
+          }
+
+          # Node#set_service will store these under
+          # Node#properties[:service_extras]:
+          port.scripts.each { |k, v| service[k] = v } if port.try(:scripts)
+
+          host_node.set_service(service)
 
           # HACK: patch in a `host` method to `Nmap::Port`
           # so we can use it in the template:
