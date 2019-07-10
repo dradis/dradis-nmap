@@ -50,6 +50,7 @@ module Dradis::Plugins::Nmap
             reason: port.reason,
             name: port.try(:service).try(:name),
             product: port.try(:service).try(:product),
+            tunnel: port.try(:service).try(:tunnel),
             version: port.try(:service).try(:version),
             source: :nmap,
           }

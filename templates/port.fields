@@ -4,5 +4,6 @@ port.state
 port.reason
 port.service.name
 port.service.product
+port.service.tunnel
 port.service.version
 port.host
