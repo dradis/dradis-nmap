@@ -58,6 +58,7 @@ module Dradis
             if (srv = port.service)
               port_info << " #{srv.try('name') || ''} |"
               port_info << " #{srv.try('product') || ''} |"
+              port_info << " #{srv.try('tunnel') || ''} |"
               port_info << " #{srv.try('version') || ''} |"
             else
               port_info << "  |  |  |"
