@@ -41,7 +41,11 @@ module Dradis
             # port.service.product
             # port.service.version
             if @nmap_object.service
-              @nmap_object.service.try(attribute) || 'n/a'
+              if attribute == 'tunnel'
+                @nmap_object.service.try(:ssl?) ? 'ssl' : 'n/a'
+              else
+                @nmap_object.service.try(attribute) || 'n/a'
+              end
             end
           else
             @nmap_object.try(name) || 'n/a'

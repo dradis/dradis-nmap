@@ -10,5 +10,6 @@
   <service
     name="smtp"
     method="table"
-    conf="3"/>
+    conf="3"
+    tunnel="ssl"/>
 </port>
