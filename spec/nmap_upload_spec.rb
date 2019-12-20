@@ -12,34 +12,11 @@ describe 'Nmap upload plugin' do
       # Init services
       plugin = Dradis::Plugins::Nmap
 
-      @content_service = Dradis::Plugins::ContentService.new(plugin: plugin)
-      template_service = Dradis::Plugins::TemplateService.new(plugin: plugin)
+      @content_service = Dradis::Plugins::ContentService::Base.new(plugin: plugin)
 
       @importer = plugin::Importer.new(
-        content_service: @content_service,
-        template_service: template_service
+        content_service: @content_service
       )
-
-      # Stub dradis-plugins methods
-      #
-      # They return their argument hashes as objects mimicking
-      # Nodes, Issues, etc
-      allow(@content_service).to receive(:create_node) do |args|
-        # puts "create_node: #{ args.inspect }"
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_note) do |args|
-        # puts "create_note: #{ args.inspect }"
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_issue) do |args|
-        # puts "create_issue: #{ args.inspect }"
-        OpenStruct.new(args)
-      end
-      allow(@content_service).to receive(:create_evidence) do |args|
-        # puts "create_evidence: #{ args.inspect }"
-        OpenStruct.new(args)
-      end
     end
 
     it "creates an error note when the xml is not valid" do
@@ -47,16 +24,20 @@ describe 'Nmap upload plugin' do
         expect(args[:text]).to include("#[Title]#\nInvalid file format")
         OpenStruct.new(args)
       end.once
+      
       # Run the import
       @importer.import(file: 'spec/fixtures/files/invalid.xml')
     end
 
     it "creates nodes, issues, notes and an evidences as needed" do
       expect(@content_service).to receive(:create_node) do |args|
-        # puts "create_node: #{ args.inspect }"
+        puts "create_node: #{ args.inspect }"
         expect(args[:label]).to eq('74.207.244.221')
         expect(args[:type]).to eq(:host)
-        OpenStruct.new(args)
+        obj = OpenStruct.new(args)
+        obj.define_singleton_method(:set_property) { |*| }
+        obj.define_singleton_method(:set_service) { |*| }
+        obj
       end.once
       expect(@content_service).to receive(:create_note) do |args|
         puts "create_note: #{ args.inspect }"
