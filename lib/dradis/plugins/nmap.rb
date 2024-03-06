@@ -7,5 +7,6 @@ end
 
 require 'dradis/plugins/nmap/engine'
 require 'dradis/plugins/nmap/field_processor'
+require 'dradis/plugins/nmap/mapping'
 require 'dradis/plugins/nmap/importer'
 require 'dradis/plugins/nmap/version'
