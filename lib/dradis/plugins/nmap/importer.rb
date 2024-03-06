@@ -41,7 +41,7 @@ module Dradis::Plugins::Nmap
         host_node.set_property(:os, host.os.matches.map(&:name)) if host.os.present?
 
         # Old-style properties-in-a-note approach
-        host_text = template_service.process_template(template: 'host', data: host)
+        host_text = mapping_service.apply_mapping(source: 'host', data: host)
         content_service.create_note(text: host_text, node: host_node)
 
         host.each_port do |port|
@@ -71,7 +71,7 @@ module Dradis::Plugins::Nmap
           port.host = host.ip
 
           # Add a note with the port information
-          port_text = template_service.process_template(template: 'port', data: port)
+          port_text = mapping_service.apply_mapping(source: 'port', data: port)
           content_service.create_note(
             text: port_text,
             node: host_node)
