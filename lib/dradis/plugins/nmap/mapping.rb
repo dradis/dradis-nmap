@@ -18,5 +18,25 @@ module Dradis::Plugins::Nmap
         'Host' => '{{ nmap[port.host] }}'
       }
     }.freeze
+
+    SOURCE_FIELDS = {
+      host: [
+        'host.hostnames',
+        'host.ip',
+        'host.service_table',
+        'host.os'
+      ],
+      port: [
+        'port.number',
+        'port.protocol',
+        'port.state',
+        'port.reason',
+        'port.service.name',
+        'port.service.product',
+        'port.service.tunnel',
+        'port.service.version',
+        'port.host'
+      ]
+    }.freeze
   end
 end
