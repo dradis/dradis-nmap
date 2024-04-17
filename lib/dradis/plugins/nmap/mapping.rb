@@ -6,8 +6,7 @@ module Dradis::Plugins::Nmap
         'IP' => '{{ nmap[host.ip] }}',
         'Hostnames' => '{{ nmap[host.hostnames] }}',
         'OS' => '{{ nmap[host.os] }}',
-        'Services' => "|_. Port number |_. Protocol |_. State |_. Service |_. Product |_. Version |\n
-                      {{ nmap[host.service_table] }}",
+        'Services' => "|_. Port number |_. Protocol |_. State |_. Service |_. Product |_. Version |\n{{ nmap[host.service_table] }}",
         'Type' => 'Properties'
       },
       port: {
