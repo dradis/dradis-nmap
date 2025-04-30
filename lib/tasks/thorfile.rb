@@ -6,6 +6,9 @@ class NmapTasks < Thor
   desc      "upload FILE", "upload the results of an Nmap scan"
   long_desc "Upload an Nmap scan to create nodes and notes for the hosts and "\
             "ports discovered during scanning."
+  method_option :state,
+    type: :string,
+    desc: 'The state your issues will be created with. If not provided, the scope will be draft'
 
   def upload(file_path)
     require 'config/environment'
